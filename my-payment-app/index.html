@@ -3,146 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Make Payment</title>
+    <title>Payment App</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
         body {
-            background-color: #f4f5f8;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            margin: 0;
         }
         .card {
-            background: #ffffff;
-            width: 100%;
-            max-width: 400px;
+            background: white;
             padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-        }
-        h2 {
-            font-size: 26px;
-            font-weight: 700;
-            color: #111;
-            margin-bottom: 8px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             text-align: center;
-        }
-        p.subtitle {
-            font-size: 14px;
-            color: #666;
-            text-align: center;
-            margin-bottom: 24px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: #111;
-            margin-bottom: 8px;
+            width: 300px;
         }
         input {
             width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 15px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        input:focus {
-            border-color: #5b35ed;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
         }
         button {
-            width: 100%;
-            padding: 14px;
-            background-color: #5b35ed;
+            background-color: #28a745;
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            font-size: 16px;
         }
         button:hover {
-            background-color: #4c2ad4;
+            background-color: #218838;
         }
-        button:disabled {
-            background-color: #a593f5;
-            cursor: not-allowed;
+        #message {
+            margin-top: 15px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <h2>Make Payment</h2>
-        <p class="subtitle">Enter your details to continue</p>
-        
-        <form id="paymentForm">
-            <div class="form-group">
-                <label for="mobileNumber">Mobile Number</label>
-                <input type="tel" id="mobileNumber" placeholder="Enter mobile number" required pattern="[0-9]{10}">
-            </div>
-            
-            <div class="form-group">
-                <label for="amount">Amount</label>
-                <input type="number" id="amount" placeholder="Enter amount" required min="10">
-            </div>
-            
-            <button type="submit" id="payButton">Pay Now</button>
-        </form>
+        <h2>Make a Payment</h2>
+        <input type="number" id="amount" placeholder="Enter Amount (INR)" value="100">
+        <button onclick="makePayment()">Pay Now</button>
+        <p id="message"></p>
     </div>
 
     <script>
-        const form = document.getElementById('paymentForm');
-        const payButton = document.getElementById('payButton');
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const mobileNumber = document.getElementById('mobileNumber').value;
+        async function makePayment() {
             const amount = document.getElementById('amount').value;
-
-            payButton.disabled = true;
-            payButton.innerText = 'Processing...';
+            const message = document.getElementById('message');
+            
+            message.style.color = "blue";
+            message.innerText = "Processing...";
 
             try {
-                // Ye endpoint /api/index par request bhejega jo Vercel serverless function handle karega
-                const response = await fetch('/api/index', {
+                const response = await fetch('/api.js', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ mobileNumber, amount })
+                    body: JSON.stringify({ amount: amount })
                 });
 
                 const data = await response.json();
-
-                if (data.cashierUrl) {
-                    // BladePay ke Cashier URL par redirect kar dega
-                    window.location.href = data.cashierUrl;
+                
+                if (response.ok) {
+                    message.style.color = "green";
+                    message.innerText = "Success: " + (data.message || "Payment initiated!");
                 } else {
-                    alert('Error: ' + (data.message || 'Something went wrong'));
-                    payButton.disabled = false;
-                    payButton.innerText = 'Pay Now';
+                    message.style.color = "red";
+                    message.innerText = "Error: " + (data.error || "Something went wrong");
                 }
-            } catch (err) {
-                console.error(err);
-                alert('Network error. Please try again.');
-                payButton.disabled = false;
-                payButton.innerText = 'Pay Now';
+            } catch (error) {
+                message.style.color = "red";
+                message.innerText = "Network Error!";
             }
-        });
+        }
     </script>
+
 </body>
 </html>
