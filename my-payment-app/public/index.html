@@ -117,7 +117,8 @@
             payButton.innerText = 'Processing...';
 
             try {
-                const response = await fetch('/api/create-payment', {
+                // Ye endpoint /api/index par request bhejega jo Vercel serverless function handle karega
+                const response = await fetch('/api/index', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -127,7 +128,7 @@
 
                 const data = await response.json();
 
-                if (data.success && data.cashierUrl) {
+                if (data.cashierUrl) {
                     // BladePay ke Cashier URL par redirect kar dega
                     window.location.href = data.cashierUrl;
                 } else {
