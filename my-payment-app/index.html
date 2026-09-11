@@ -108,6 +108,20 @@
       transform: scale(0.99);
     }
 
+    .pay-button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .message {
+      display: none;
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+      color: #d33;
+      line-height: 1.5;
+    }
+
     @media (max-width: 600px) {
       body {
         padding: 25px;
@@ -194,6 +208,7 @@
           id="mobile"
           placeholder="Enter mobile number"
           maxlength="10"
+          inputmode="numeric"
           required
         />
       </div>
@@ -204,37 +219,77 @@
           type="number"
           id="amount"
           placeholder="Enter amount"
-          min="1"
+          min="10"
           required
         />
       </div>
 
-      <button type="submit" class="pay-button">
+      <button type="submit" class="pay-button" id="payButton">
         Pay Now
       </button>
+
+      <div class="message" id="message"></div>
 
     </form>
 
   </div>
 
   <script>
-    document.getElementById("paymentForm").addEventListener("submit", function(e) {
+    const paymentForm = document.getElementById("paymentForm");
+    const payButton = document.getElementById("payButton");
+    const message = document.getElementById("message");
+
+    function showMessage(text) {
+      message.textContent = text;
+      message.style.display = "block";
+    }
+
+    paymentForm.addEventListener("submit", async function (e) {
       e.preventDefault();
 
-      const mobile = document.getElementById("mobile").value;
-      const amount = document.getElementById("amount").value;
+      const mobile = document.getElementById("mobile").value.trim();
+      const amount = document.getElementById("amount").value.trim();
 
-      if (mobile.length !== 10) {
-        alert("Please enter a valid 10-digit mobile number.");
+      if (!/^[0-9]{10}$/.test(mobile)) {
+        showMessage("Please enter a valid 10-digit mobile number.");
         return;
       }
 
-      if (!amount || amount <= 0) {
-        alert("Please enter a valid amount.");
+      if (!amount || Number(amount) < 10) {
+        showMessage("Minimum payment amount is ₹10.");
         return;
       }
 
-      alert("Payment details submitted!");
+      payButton.disabled = true;
+      payButton.textContent = "Processing...";
+      message.style.display = "none";
+
+      try {
+        const response = await fetch("/api/create-order", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            mobile: mobile,
+            amount: amount
+          })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success || !result.cashierUrl) {
+          throw new Error(result.error || "Unable to create payment order.");
+        }
+
+        // Redirect customer to BladePay payment page
+        window.location.href = result.cashierUrl;
+
+      } catch (error) {
+        showMessage(error.message || "Something went wrong. Please try again.");
+        payButton.disabled = false;
+        payButton.textContent = "Pay Now";
+      }
     });
   </script>
 
