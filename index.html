@@ -145,7 +145,7 @@
       .art-frame img {
         width: 100%;
         display: block;
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 1 / 1;
         object-fit: cover;
       }
 
@@ -221,9 +221,9 @@
         color: #ff382f;
       }
 
-      .countdown div { min-width: 55px; }
-      .countdown strong { display: block; font-size: clamp(26px, 5vw, 36px); line-height: 1; font-weight: 900; font-variant-numeric: tabular-nums; }
-      .countdown span { display: block; margin-top: 6px; font-size: 9px; font-weight: 800; color: #8b8b8b; letter-spacing: .08em; }
+      .countdown div { min-width: 70px; }
+      .countdown strong { display: block; font-size: clamp(28px, 6vw, 42px); line-height: 1; font-weight: 900; font-variant-numeric: tabular-nums; }
+      .countdown span { display: block; margin-top: 6px; font-size: 10px; font-weight: 800; color: #8b8b8b; letter-spacing: .08em; }
 
       .fine-print {
         max-width: 520px;
@@ -290,7 +290,7 @@
 
         <div class="hero-art">
           <div class="art-frame">
-            <img src="https://picsum.photos/600/350?dark" alt="Earning Shadow Community Dashboard" />
+            <img src="WhatsApp Image 2026-09-15 at 12.14.35 PM.jpeg" alt="Dark Shadow Logo" />
           </div>
         </div>
 
@@ -310,9 +310,7 @@
         <section class="countdown-wrap">
           <p class="countdown-label">Limited Time VIP Access Closes In</p>
           <div class="countdown" id="timer">
-            <div><strong id="hours">23</strong><span>HOURS</span></div>
-            <div><strong id="minutes">59</strong><span>MINS</span></div>
-            <div><strong id="seconds">59</strong><span>SECS</span></div>
+            <div><strong id="seconds">15</strong><span>SECONDS</span></div>
           </div>
         </section>
 
@@ -325,28 +323,22 @@
     <div class="toast" id="live-toast">🔥 Someone from Mumbai just joined VIP Telegram!</div>
 
     <script>
-      // 1. Countdown Timer Logic
-      (function initTimer() {
-        const STORAGE_KEY = 'earning_shadow_timer';
-        let endTime = localStorage.getItem(STORAGE_KEY);
-        if (!endTime || Date.now() > parseInt(endTime, 10)) {
-          endTime = Date.now() + 24 * 60 * 60 * 1000;
-          localStorage.setItem(STORAGE_KEY, endTime);
-        }
+      // 1. 15 Seconds Countdown Timer Logic
+      (function init15SecTimer() {
+        let remainingSeconds = 15;
+        const secondsElem = document.getElementById('seconds');
+        const timerWrap = document.getElementById('timer');
 
-        function updateDisplay() {
-          const remaining = Math.max(0, parseInt(endTime, 10) - Date.now());
-          const hrs = Math.floor(remaining / (1000 * 60 * 60));
-          const mins = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-          const secs = Math.floor((remaining % (1000 * 60)) / 1000);
-
-          document.getElementById('hours').textContent = String(hrs).padStart(2, '0');
-          document.getElementById('minutes').textContent = String(mins).padStart(2, '0');
-          document.getElementById('seconds').textContent = String(secs).padStart(2, '0');
-        }
-
-        updateDisplay();
-        setInterval(updateDisplay, 1000);
+        const countdownInterval = setInterval(() => {
+          remainingSeconds--;
+          if (remainingSeconds <= 0) {
+            clearInterval(countdownInterval);
+            secondsElem.textContent = '00';
+            timerWrap.innerHTML = '<span style="font-weight:900; font-size:20px; color:#ff382f;">OFFER EXPIRED!</span>';
+          } else {
+            secondsElem.textContent = String(remainingSeconds).padStart(2, '0');
+          }
+        }, 1000);
       })();
 
       // 2. Dynamic Notification Toast
@@ -379,9 +371,8 @@
         let lastClickTime = 0;
         let userMovedMouse = false;
         const MAX_CLICKS_PER_SESSION = 5;
-        const COOLDOWN_MS = 1500; // 1.5 second mandatory cooldown between clicks
+        const COOLDOWN_MS = 1500;
 
-        // Mouse activity tracking
         window.addEventListener('mousemove', function onFirstMove() {
           userMovedMouse = true;
           window.removeEventListener('mousemove', onFirstMove);
@@ -390,35 +381,26 @@
         ctaBtn.addEventListener('click', function(e) {
           const now = Date.now();
 
-          // Rule A: Check Honeypot Field (Spam Bots)
           if (honeypot && honeypot.value !== "") {
             e.preventDefault();
-            console.warn("Anti-Click: Honeypot triggered.");
             return false;
           }
 
-          // Rule B: Synthetic / Non-Trusted Click Detection (Automated Scripts)
           if (!e.isTrusted) {
             e.preventDefault();
-            console.warn("Anti-Click: Synthetic click blocked.");
             return false;
           }
 
-          // Rule C: Mouse Coordinate Validation (Check zero-displacement fake clicks on desktop)
           if (window.innerWidth > 768 && !userMovedMouse && e.clientX === 0 && e.clientY === 0) {
             e.preventDefault();
-            console.warn("Anti-Click: Scripted zero-coordinate click blocked.");
             return false;
           }
 
-          // Rule D: Rapid Click Burst Protection (Cooldown)
           if (now - lastClickTime < COOLDOWN_MS) {
             e.preventDefault();
-            console.warn("Anti-Click: Rapid burst click ignored.");
             return false;
           }
 
-          // Rule E: Session Limit Check
           let sessionClicks = parseInt(sessionStorage.getItem('user_click_count') || '0', 10);
           if (sessionClicks >= MAX_CLICKS_PER_SESSION) {
             e.preventDefault();
@@ -428,12 +410,10 @@
             return false;
           }
 
-          // Successful click validation
           lastClickTime = now;
           sessionClicks += 1;
           sessionStorage.setItem('user_click_count', sessionClicks);
 
-          // Apply temporary UI cooldown
           ctaBtn.classList.add('btn-disabled');
           ctaText.textContent = "REDIRECTING...";
 
