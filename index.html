@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#050505" />
+    <meta name="description" content="Join Earning Shadow on Telegram for earning updates and community support." />
+    <title>Earning Shadow — The King of Earning</title>
+    <style>
+      :root {
+        --red: #ee001d;
+        --deep-red: #310002;
+        --white: #ffffff;
+        --muted: #aaa7aa;
+        --gold: #ffc43d;
+        --cta-pulse-speed: 2.2s;
+        --glow-top-opacity: 0.14;
+      }
+
+      * { box-sizing: border-box; }
+      html { min-height: 100%; }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--white);
+        background:
+          radial-gradient(circle at 50% 10%, rgba(82, 82, 82, .2), transparent 31%),
+          linear-gradient(160deg, #111315 0%, #050505 45%, #101113 100%);
+        font-family: "Inter", system-ui, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: .16;
+        background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+        background-size: 34px 34px;
+      }
+
+      .landing-shell {
+        width: 100%;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 28px 16px;
+      }
+
+      .poster {
+        width: min(100%, 650px);
+        min-height: 920px;
+        padding: 60px 34px 30px;
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        isolation: isolate;
+        border: 2px solid rgba(255,255,255,.2);
+        border-radius: 54px;
+        background: linear-gradient(180deg, #050505 0%, #090909 60%, #020202 100%);
+        box-shadow:
+          0 0 0 7px rgba(255,255,255,.025),
+          0 0 34px rgba(255,255,255,.18),
+          0 32px 85px rgba(0,0,0,.78),
+          inset 0 0 28px rgba(255,255,255,.04);
+      }
+
+      .poster::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background: linear-gradient(115deg, transparent 28%, rgba(255,255,255,.035) 46%, transparent 62%);
+      }
+
+      .poster-glow {
+        width: 340px;
+        height: 340px;
+        position: absolute;
+        z-index: -1;
+        border-radius: 50%;
+        filter: blur(95px);
+      }
+
+      .poster-glow--top { top: 80px; left: -230px; background: rgba(239,0,28, var(--glow-top-opacity)); }
+      .poster-glow--bottom { right: -220px; bottom: 70px; background: rgba(20,91,255,.1); }
+
+      .brand-banner {
+        min-height: 94px;
+        margin: 0 -34px 20px;
+        padding: 18px 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        background:
+          linear-gradient(90deg, rgba(50,0,0,.7), rgba(89,0,0,.92) 47%, rgba(39,0,0,.72)),
+          #320000;
+        border-block: 1px solid rgba(255,48,48,.13);
+        box-shadow: 0 8px 30px rgba(117,0,8,.15);
+      }
+
+      .brand-banner h1 {
+        margin: 0;
+        font-size: clamp(24px, 5.5vw, 42px);
+        line-height: 1;
+        letter-spacing: -.035em;
+        font-weight: 900;
+        text-shadow: 0 3px 0 rgba(0,0,0,.35), 0 0 18px rgba(255,255,255,.12);
+      }
+
+      .brand-symbol {
+        margin-left: 8px;
+        color: var(--gold);
+        font-size: 32px;
+        filter: drop-shadow(0 0 8px rgba(255,196,61,.35));
+      }
+
+      .tagline {
+        margin: 15px 0 25px;
+        font-size: clamp(18px, 3.8vw, 26px);
+        font-weight: 800;
+      }
+
+      .tagline span { color: #ff3b35; }
+
+      .hero-art {
+        width: min(82%, 390px);
+        margin: 0 auto 28px;
+        position: relative;
+      }
+
+      .art-frame {
+        padding: 3px;
+        overflow: hidden;
+        border: 1px solid rgba(158,202,255,.5);
+        background: #070d18;
+        box-shadow: 0 0 27px rgba(44,122,255,.32), 0 18px 32px rgba(0,0,0,.72);
+        border-radius: 12px;
+      }
+
+      .art-frame img {
+        width: 100%;
+        display: block;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+      }
+
+      .telegram-cta {
+        width: 100%;
+        min-height: 72px;
+        padding: 13px 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        position: relative;
+        color: var(--white);
+        border: 3px solid var(--white);
+        border-radius: 8px;
+        background: linear-gradient(95deg, #ef001c, #90000c 63%, #2a0001);
+        box-shadow: 0 0 20px rgba(255,255,255,.16), 0 14px 27px rgba(130,0,11,.25), inset 0 0 16px rgba(255,255,255,.08);
+        font-size: clamp(18px, 3.5vw, 24px);
+        font-weight: 900;
+        text-decoration: none;
+        letter-spacing: -.025em;
+        animation: cta-pulse var(--cta-pulse-speed) ease-in-out infinite;
+        transition: transform .2s ease, filter .2s ease, opacity .2s ease;
+      }
+
+      .telegram-cta:hover { transform: translateY(-3px) scale(1.012); filter: brightness(1.12); }
+      .telegram-cta:active { transform: translateY(0) scale(.99); }
+      .telegram-cta.btn-disabled { opacity: .5; pointer-events: none; filter: grayscale(0.8); cursor: not-allowed; }
+
+      .telegram-icon {
+        width: 32px;
+        height: 32px;
+        flex: 0 0 32px;
+        display: grid;
+        place-items: center;
+      }
+
+      .telegram-icon svg { width: 100%; height: 100%; fill: currentColor; }
+
+      .promise-list {
+        margin: 28px auto 25px;
+        display: grid;
+        gap: 14px;
+        text-align: left;
+        font-size: clamp(14px, 2.5vw, 17px);
+        line-height: 1.4;
+        font-weight: 700;
+      }
+
+      .promise-list p { margin: 0; }
+      .promise-icon { margin-right: 8px; color: #ff382f; }
+
+      .countdown-wrap {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255,255,255,.09);
+      }
+
+      .countdown-label {
+        margin: 0 0 12px;
+        color: #8b8b8b;
+        font-size: 11px;
+        letter-spacing: .18em;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .countdown {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(8px, 3vw, 20px);
+        color: #ff382f;
+      }
+
+      .countdown div { min-width: 55px; }
+      .countdown strong { display: block; font-size: clamp(26px, 5vw, 36px); line-height: 1; font-weight: 900; font-variant-numeric: tabular-nums; }
+      .countdown span { display: block; margin-top: 6px; font-size: 9px; font-weight: 800; color: #8b8b8b; letter-spacing: .08em; }
+
+      .fine-print {
+        max-width: 520px;
+        margin: 22px auto 0;
+        color: #5f5f5f;
+        font-size: 10px;
+        line-height: 1.5;
+      }
+
+      .bot-trap {
+        display: none;
+        visibility: hidden;
+      }
+
+      .toast {
+        max-width: calc(100% - 30px);
+        padding: 12px 20px;
+        position: fixed;
+        left: 50%;
+        bottom: 25px;
+        z-index: 20;
+        color: #111;
+        background: #fff;
+        border-radius: 50px;
+        box-shadow: 0 15px 40px rgba(0,0,0,.6);
+        font-size: 13px;
+        font-weight: 700;
+        opacity: 0;
+        transform: translate(-50%, 20px);
+        pointer-events: none;
+        transition: opacity .3s cubic-bezier(0.16, 1, 0.3, 1), transform .3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+      @keyframes cta-pulse {
+        0%, 100% { box-shadow: 0 0 15px rgba(255,255,255,.12), 0 12px 28px rgba(130,0,11,.25); }
+        50% { box-shadow: 0 0 25px rgba(255,255,255,.34), 0 15px 35px rgba(239,0,28,.46); }
+      }
+
+      @media (max-width: 560px) {
+        .landing-shell { padding: 8px; }
+        .poster { padding: 40px 18px 24px; border-radius: 34px; }
+        .brand-banner { margin-inline: -18px; padding-inline: 20px; }
+        .hero-art { width: 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Honeypot Bot Trap -->
+    <input type="text" name="website_hp" id="bot-honeypot" class="bot-trap" tabindex="-1" autocomplete="off" />
+
+    <main class="landing-shell">
+      <article class="poster">
+        <div class="poster-glow poster-glow--top"></div>
+        <div class="poster-glow poster-glow--bottom"></div>
+
+        <header class="brand-banner">
+          <h1>Earning Shadow</h1>
+          <span class="brand-symbol">👑</span>
+        </header>
+
+        <p class="tagline">The King of Earning <span>— Guaranteed Updates</span></p>
+
+        <div class="hero-art">
+          <div class="art-frame">
+            <img src="https://picsum.photos/600/350?dark" alt="Earning Shadow Community Dashboard" />
+          </div>
+        </div>
+
+        <a href="https://t.me/" target="_blank" rel="noopener" class="telegram-cta" id="cta-button">
+          <span class="telegram-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.25.38-.51 1.07-.78 4.18-1.82 6.97-3.02 8.37-3.61 3.98-1.66 4.81-1.95 5.35-1.96.12 0 .38.03.55.17.14.12.18.28.2.45-.02.07-.02.16-.03.26z"/></svg>
+          </span>
+          <span id="cta-text">JOIN TELEGRAM NOW</span>
+        </a>
+
+        <section class="promise-list">
+          <p><span class="promise-icon">✔</span> <strong>100% Verified</strong> Daily Earning Methods & Tricks</p>
+          <p><span class="promise-icon">✔</span> <strong>Instant Withdrawals</strong> & Payment Proofs Shared</p>
+          <p><span class="promise-icon">✔</span> <strong>24/7 Support</strong> for All VIP Community Members</p>
+        </section>
+
+        <section class="countdown-wrap">
+          <p class="countdown-label">Limited Time VIP Access Closes In</p>
+          <div class="countdown" id="timer">
+            <div><strong id="hours">23</strong><span>HOURS</span></div>
+            <div><strong id="minutes">59</strong><span>MINS</span></div>
+            <div><strong id="seconds">59</strong><span>SECS</span></div>
+          </div>
+        </section>
+
+        <footer class="fine-print">
+          Disclaimer: Earning Shadow provides educational updates and community support for online opportunities. Results vary based on individual effort.
+        </footer>
+      </article>
+    </main>
+
+    <div class="toast" id="live-toast">🔥 Someone from Mumbai just joined VIP Telegram!</div>
+
+    <script>
+      // 1. Countdown Timer Logic
+      (function initTimer() {
+        const STORAGE_KEY = 'earning_shadow_timer';
+        let endTime = localStorage.getItem(STORAGE_KEY);
+        if (!endTime || Date.now() > parseInt(endTime, 10)) {
+          endTime = Date.now() + 24 * 60 * 60 * 1000;
+          localStorage.setItem(STORAGE_KEY, endTime);
+        }
+
+        function updateDisplay() {
+          const remaining = Math.max(0, parseInt(endTime, 10) - Date.now());
+          const hrs = Math.floor(remaining / (1000 * 60 * 60));
+          const mins = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+          const secs = Math.floor((remaining % (1000 * 60)) / 1000);
+
+          document.getElementById('hours').textContent = String(hrs).padStart(2, '0');
+          document.getElementById('minutes').textContent = String(mins).padStart(2, '0');
+          document.getElementById('seconds').textContent = String(secs).padStart(2, '0');
+        }
+
+        updateDisplay();
+        setInterval(updateDisplay, 1000);
+      })();
+
+      // 2. Dynamic Notification Toast
+      (function initToasts() {
+        const toast = document.getElementById('live-toast');
+        const messages = [
+          "🔥 Rahul M. earned ₹1,500 today!",
+          "✅ Priya K. joined Telegram VIP Channel!",
+          "⚡ Instant Withdrawal Processed: ₹2,400",
+          "🎉 New Earning Loot Updated on Telegram!"
+        ];
+
+        let index = 0;
+        setInterval(() => {
+          toast.textContent = messages[index];
+          toast.classList.add('is-visible');
+          setTimeout(() => {
+            toast.classList.remove('is-visible');
+          }, 3500);
+          index = (index + 1) % messages.length;
+        }, 7000);
+      })();
+
+      // 3. Complete Anti-Fake-Click Protection Suite
+      (function initAntiFakeClick() {
+        const ctaBtn = document.getElementById('cta-button');
+        const ctaText = document.getElementById('cta-text');
+        const honeypot = document.getElementById('bot-honeypot');
+
+        let lastClickTime = 0;
+        let userMovedMouse = false;
+        const MAX_CLICKS_PER_SESSION = 5;
+        const COOLDOWN_MS = 1500; // 1.5 second mandatory cooldown between clicks
+
+        // Mouse activity tracking
+        window.addEventListener('mousemove', function onFirstMove() {
+          userMovedMouse = true;
+          window.removeEventListener('mousemove', onFirstMove);
+        });
+
+        ctaBtn.addEventListener('click', function(e) {
+          const now = Date.now();
+
+          // Rule A: Check Honeypot Field (Spam Bots)
+          if (honeypot && honeypot.value !== "") {
+            e.preventDefault();
+            console.warn("Anti-Click: Honeypot triggered.");
+            return false;
+          }
+
+          // Rule B: Synthetic / Non-Trusted Click Detection (Automated Scripts)
+          if (!e.isTrusted) {
+            e.preventDefault();
+            console.warn("Anti-Click: Synthetic click blocked.");
+            return false;
+          }
+
+          // Rule C: Mouse Coordinate Validation (Check zero-displacement fake clicks on desktop)
+          if (window.innerWidth > 768 && !userMovedMouse && e.clientX === 0 && e.clientY === 0) {
+            e.preventDefault();
+            console.warn("Anti-Click: Scripted zero-coordinate click blocked.");
+            return false;
+          }
+
+          // Rule D: Rapid Click Burst Protection (Cooldown)
+          if (now - lastClickTime < COOLDOWN_MS) {
+            e.preventDefault();
+            console.warn("Anti-Click: Rapid burst click ignored.");
+            return false;
+          }
+
+          // Rule E: Session Limit Check
+          let sessionClicks = parseInt(sessionStorage.getItem('user_click_count') || '0', 10);
+          if (sessionClicks >= MAX_CLICKS_PER_SESSION) {
+            e.preventDefault();
+            alert("Rate limit exceeded! Please wait before attempting again.");
+            ctaBtn.classList.add('btn-disabled');
+            ctaText.textContent = "PLEASE WAIT...";
+            return false;
+          }
+
+          // Successful click validation
+          lastClickTime = now;
+          sessionClicks += 1;
+          sessionStorage.setItem('user_click_count', sessionClicks);
+
+          // Apply temporary UI cooldown
+          ctaBtn.classList.add('btn-disabled');
+          ctaText.textContent = "REDIRECTING...";
+
+          setTimeout(() => {
+            if (sessionClicks < MAX_CLICKS_PER_SESSION) {
+              ctaBtn.classList.remove('btn-disabled');
+              ctaText.textContent = "JOIN TELEGRAM NOW";
+            }
+          }, COOLDOWN_MS);
+        });
+      })();
+    </script>
+  </body>
+</html>
